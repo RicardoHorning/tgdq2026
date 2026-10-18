@@ -252,32 +252,56 @@
       </div>
     </section>
 
-    <!-- 3. GABARITO & ENVIO DO ARQUIVO -->
+    <!-- 3. GABARITO & ENVIO DO ARQUIVO (5 CAMPOS AVALIATIVOS) -->
     <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
       <div class="border-b pb-3">
         <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2">
-          <span>🏆</span> 3. Validação Automática de Gabarito & Envio da Nota
+          <span>🏆</span> 3. Validação Automática do Gabarito & Envio das Respostas (5 Questões)
         </h2>
         <p class="text-xs text-gray-600 mt-1">
-          Insira abaixo os valores exatos calculados na sua planilha para verificação determinística contra o seu gabarito individual.
+          Insira abaixo os 5 valores exatos calculados na sua planilha para verificação determinística contra a sua base de dados individual. Cada resposta correta vale 2.0 pontos na sua nota final (Total: 10.0).
         </p>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-1">
-          <label class="block text-xs font-bold text-gray-700">1. Média do Prazo de Entrega em Dias (=MÉDIA):</label>
-          <input type="number" id="respMediaDias" step="0.01" placeholder="Ex: 5.45" class="w-full p-2.5 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
-          <span class="text-[10px] text-gray-500 block">Calculado com a função =MÉDIA na coluna Dias_Entrega</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Q1 -->
+        <div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200 space-y-1">
+          <label class="block text-xs font-bold text-gray-700">1. Média de Prazo de Entrega (Dias):</label>
+          <input type="number" id="respMediaDias" step="0.01" placeholder="Ex: 5.45" class="w-full p-2 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
+          <span class="text-[10px] text-gray-500 block">Fórmula: =MÉDIA(Dias_Entrega)</span>
         </div>
-        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-1">
-          <label class="block text-xs font-bold text-gray-700">2. Total de Pedidos Atrasados (=CONT.SE):</label>
-          <input type="number" id="respAtrasados" placeholder="Ex: 82" class="w-full p-2.5 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
-          <span class="text-[10px] text-gray-500 block">Calculado com =CONT.SE(Status_Frete; "Atrasado")</span>
+
+        <!-- Q2 -->
+        <div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200 space-y-1">
+          <label class="block text-xs font-bold text-gray-700">2. Total de Pedidos Atrasados:</label>
+          <input type="number" id="respAtrasados" placeholder="Ex: 82" class="w-full p-2 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
+          <span class="text-[10px] text-gray-500 block">Fórmula: =CONT.SE(Status_Frete; "Atrasado")</span>
+        </div>
+
+        <!-- Q3 -->
+        <div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200 space-y-1">
+          <label class="block text-xs font-bold text-gray-700">3. Faturamento Total (R$):</label>
+          <input type="number" id="respFaturamento" step="0.01" placeholder="Ex: 92450.00" class="w-full p-2 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
+          <span class="text-[10px] text-gray-500 block">Fórmula: =SOMA(Valor_Venda)</span>
+        </div>
+
+        <!-- Q4 -->
+        <div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200 space-y-1">
+          <label class="block text-xs font-bold text-gray-700">4. Maior Valor de Venda Única (R$):</label>
+          <input type="number" id="respMaiorVenda" step="0.01" placeholder="Ex: 899.50" class="w-full p-2 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
+          <span class="text-[10px] text-gray-500 block">Fórmula: =MÁXIMO(Valor_Venda)</span>
+        </div>
+
+        <!-- Q5 -->
+        <div class="bg-gray-50 p-3.5 rounded-lg border border-gray-200 space-y-1 col-span-1 md:col-span-2 lg:col-span-2">
+          <label class="block text-xs font-bold text-gray-700">5. Total Pago em Bônus aos Vendedores (R$):</label>
+          <input type="number" id="respTotalBonus" step="0.01" placeholder="Ex: 2450.80" class="w-full p-2 border rounded-lg text-sm font-semibold text-gray-800 bg-white focus:ring-2 focus:ring-blue-500">
+          <span class="text-[10px] text-gray-500 block">Fórmula: =SOMA(Bônus_Vendedor)</span>
         </div>
       </div>
 
       <button onclick="validarEEnviar()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3.5 px-6 rounded-lg text-sm transition flex items-center justify-center gap-2 shadow-lg">
-        🚀 Submeter Gabarito e Gravar Nota Final no Sistema
+        🚀 Submeter Gabarito e Gravar Nota Final no Sistema (0 a 10)
       </button>
 
       <div id="resultadoStatus" class="mt-4 p-4 rounded-lg hidden text-center font-bold"></div>
@@ -393,33 +417,61 @@
       if (!usuarioAtual) return;
 
       const statusDiv = document.getElementById('resultadoStatus');
-      const respMediaInput = document.getElementById('respMediaDias').value;
-      const respAtrasosInput = document.getElementById('respAtrasados').value;
+      const inputMedia = document.getElementById('respMediaDias').value;
+      const inputAtrasos = document.getElementById('respAtrasados').value;
+      const inputFaturamento = document.getElementById('respFaturamento').value;
+      const inputMaiorVenda = document.getElementById('respMaiorVenda').value;
+      const inputTotalBonus = document.getElementById('respTotalBonus').value;
 
-      if (!respMediaInput || !respAtrasosInput) {
-        alert("Por favor, preencha os dois campos do gabarito antes de submeter!");
+      if (!inputMedia || !inputAtrasos || !inputFaturamento || !inputMaiorVenda || !inputTotalBonus) {
+        alert("Por favor, preencha todas as 5 questões do gabarito antes de submeter!");
         return;
       }
 
       statusDiv.className = "mt-4 p-4 rounded-lg bg-yellow-100 text-yellow-800 font-bold block border border-yellow-300";
       statusDiv.innerText = "⏳ A calcular nota e a registar resultado no sistema...";
 
+      // Recalcula gabarito determinístico
       seedGlobal = getSeed(dadosFirestore.nome + dadosFirestore.ra);
       let somaDias = 0;
       let atrasos = 0;
+      let faturamentoTotal = 0;
+      let maiorVenda = 0;
+      let totalBonus = 0;
+
       for (let i = 1; i <= 200; i++) {
         const diaP = Math.floor(seededRandom() * 20) + 1;
         const diasE = Math.floor(seededRandom() * 10) + 1;
+        const vend = ["Carlos Silva", "Ana Souza", "Marcos Lima", "Fernanda Santos"][Math.floor(seededRandom() * 4)];
+        const cat = ["Eletrônicos", "Acessórios", "Móveis Escritório", "Suprimentos"][Math.floor(seededRandom() * 4)];
+        const valor = parseFloat((seededRandom() * 800 + 100).toFixed(2));
+        const aval = Math.floor(seededRandom() * 3) + 3;
+
         somaDias += diasE;
         if (diasE > 5) atrasos++;
-      }
-      const mediaDiasGabarito = (somaDias / 200).toFixed(2);
-      const respMedia = parseFloat(respMediaInput) || 0;
-      const respAtrasos = parseInt(respAtrasosInput) || 0;
+        faturamentoTotal += valor;
+        if (valor > maiorVenda) maiorVenda = valor;
 
-      let nota = 10.0;
-      if (Math.abs(respMedia - mediaDiasGabarito) > 0.2) nota -= 2.5;
-      if (respAtrasos !== atrasos) nota -= 2.5;
+        if (valor > 400 && aval >= 4) {
+          totalBonus += (valor * 0.05);
+        }
+      }
+
+      const gMedia = parseFloat((somaDias / 200).toFixed(2));
+      const gAtrasos = atrasos;
+      const gFaturamento = parseFloat(faturamentoTotal.toFixed(2));
+      const gMaiorVenda = parseFloat(maiorVenda.toFixed(2));
+      const gTotalBonus = parseFloat(totalBonus.toFixed(2));
+
+      // Avaliação: 5 questões worth 2.0 pts cada (Total: 10.0)
+      let nota = 0.0;
+      let acertos = 0;
+
+      if (Math.abs(parseFloat(inputMedia) - gMedia) <= 0.2) { nota += 2.0; acertos++; }
+      if (parseInt(inputAtrasos) === gAtrasos) { nota += 2.0; acertos++; }
+      if (Math.abs(parseFloat(inputFaturamento) - gFaturamento) <= 5.0) { nota += 2.0; acertos++; }
+      if (Math.abs(parseFloat(inputMaiorVenda) - gMaiorVenda) <= 0.5) { nota += 2.0; acertos++; }
+      if (Math.abs(parseFloat(inputTotalBonus) - gTotalBonus) <= 2.0) { nota += 2.0; acertos++; }
 
       try {
         await db.collection("entregas_tgdq").add({
@@ -428,13 +480,19 @@
           ra: dadosFirestore.ra,
           turno: dadosFirestore.turno,
           nota: nota,
-          respMedia: respMedia,
-          respAtrasos: respAtrasos,
+          acertos: acertos,
+          respMedia: parseFloat(inputMedia),
+          respAtrasos: parseInt(inputAtrasos),
+          respFaturamento: parseFloat(inputFaturamento),
+          respMaiorVenda: parseFloat(inputMaiorVenda),
+          respTotalBonus: parseFloat(inputTotalBonus),
           dataEnvio: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        statusDiv.className = "mt-4 p-4 rounded-lg bg-green-100 text-green-800 font-bold block border border-green-300 shadow-sm";
-        statusDiv.innerHTML = `✅ Atividade Registada com Sucesso!<br>Sua Nota Final: <span class="text-3xl text-green-700 font-extrabold">${nota.toFixed(1)} / 10.0</span>`;
+        const corBox = nota >= 7 ? 'bg-green-100 text-green-800 border-green-300' : 'bg-orange-100 text-orange-800 border-orange-300';
+
+        statusDiv.className = `mt-4 p-4 rounded-lg font-bold block border shadow-sm ${corBox}`;
+        statusDiv.innerHTML = `✅ Atividade Submetida com Sucesso!<br>Questões Corretas: <b>${acertos} de 5</b><br>Sua Nota Final: <span class="text-3xl font-extrabold">${nota.toFixed(1)} / 10.0</span>`;
 
       } catch (err) {
         statusDiv.className = "mt-4 p-4 rounded-lg bg-red-100 text-red-800 font-bold block border border-red-300";
