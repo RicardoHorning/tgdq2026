@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TGDQ - Roteiro Prático Guiado Interativo</title>
+  <title>TGDQ - Roteiro Prático Guiado Interativo Completo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Firebase SDKs (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -58,7 +58,7 @@
         <div class="flex flex-col md:flex-row items-center justify-between bg-blue-50 p-4 rounded-lg border border-blue-200 gap-4">
           <div class="text-sm">
             <h3 class="font-bold text-blue-900">📦 Seu Conjunto de Dados Simulado</h3>
-            <p class="text-xs text-blue-800">Cada aluno possui uma base determinística exclusiva gerada a partir do seu Nome + RA. Não é possível copiar respostas dos colegas!</p>
+            <p class="text-xs text-blue-800">Cada aluno possui uma base determinística exclusiva gerada a partir do seu Nome + RA com 200 registros de vendas e entregas!</p>
           </div>
           <button onclick="gerarEBaixarCSV()" class="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg text-sm transition flex items-center justify-center gap-2 shadow">
             📥 Descarregar Minha Base de Dados Exclusiva (.CSV)
@@ -68,8 +68,8 @@
         <!-- BARRA DE PROGRESSO DAS TAREFAS -->
         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-2">
           <div class="flex justify-between items-center text-xs font-bold text-gray-700">
-            <span>PROGRESSO DAS MISSÕES PRÁTICAS:</span>
-            <span id="txtProgresso" class="text-blue-900 font-extrabold text-sm">0% Concluído (0/10 tarefas)</span>
+            <span>PROGRESSO TOTAL DAS MISSÕES:</span>
+            <span id="txtProgresso" class="text-blue-900 font-extrabold text-sm">0% Concluído (0/15 tarefas)</span>
           </div>
           <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
             <div id="barProgresso" class="bg-green-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
@@ -78,7 +78,7 @@
       </div>
     </section>
 
-    <!-- 2. ROTEIRO DETALHADO DOS 2 ENCONTROS (CHECKLIST INTERATIVO) -->
+    <!-- 2. ROTEIRO DETALHADO DOS MÓDULOS (CHECKLIST INTERATIVO DE 15 PASOS) -->
     <section class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-6">
       <div class="border-b pb-3 flex justify-between items-center">
         <h2 class="text-xl font-bold text-blue-900 flex items-center gap-2">
@@ -91,65 +91,60 @@
       <div class="bg-blue-50/60 border border-blue-200 p-5 rounded-xl space-y-4">
         <div class="flex items-center justify-between border-b border-blue-200 pb-2">
           <h3 class="font-bold text-blue-900 text-lg flex items-center gap-2">
-            <span>🗓️</span> ENCONTRO 1 (4h) — Tratamento de Dados, Funções de Data, Lógica & Estatística Descritiva
+            <span>🗓️</span> ENCONTRO 1 (4h) — Tratamento de Dados, Funções Temporeis, Regras Lógicas & Estatística
           </h3>
-          <span class="bg-blue-200 text-blue-900 font-bold text-xs px-2.5 py-0.5 rounded">Etapa 1 de 2</span>
+          <span class="bg-blue-200 text-blue-900 font-bold text-xs px-2.5 py-0.5 rounded">Módulo Core 1</span>
         </div>
 
         <div class="space-y-3">
 
-          <!-- PASSO 1.1 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
-            <input type="checkbox" id="chk1" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <input type="checkbox" id="chk1" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
             <label for="chk1" class="text-sm cursor-pointer space-y-1 block flex-1">
               <span class="font-bold text-blue-900 block">Passo 1.1 — Importação ETL no Excel:</span>
-              <p class="text-gray-700 text-xs">Abra o Microsoft Excel, navegue até a aba <b>Dados > Obter Dados de Texto/CSV</b> e carregue o seu ficheiro <code>.csv</code> descarregado acima. Certifique-se de definir a codificação UTF-8 e verificar se as colunas numéricas de valor e avaliação foram reconhecidas corretamente.</p>
+              <p class="text-gray-700 text-xs">Abra o Excel, acesse a aba <b>Dados > Obter Dados de Texto/CSV</b> e carregue o seu arquivo <code>.csv</code>. Verifique a codificação UTF-8 e garanta que os números de valor de venda e avaliação foram formatados corretamente.</p>
             </label>
           </div>
 
-          <!-- PASSO 1.2 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
-            <input type="checkbox" id="chk2" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <input type="checkbox" id="chk2" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
             <label for="chk2" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-blue-900 block">Passo 1.2 — Funções Temporeis & Cálculo de Dias:</span>
-              <p class="text-gray-700 text-xs">Crie a nova coluna <code>Dias_Entrega</code> utilizando a fórmula <code>=DIAS(Data_Entrega; Data_Pedido)</code>. Em seguida, crie duas colunas auxiliares para extrair o Mês (<code>=MÊS(Data_Pedido)</code>) e o Ano (<code>=ANO(Data_Pedido)</code>).</p>
+              <span class="font-bold text-blue-900 block">Passo 1.2 — Funções Temporeis & Cálculo de Prazos:</span>
+              <p class="text-gray-700 text-xs">Crie a coluna <code>Dias_Entrega</code> com a fórmula <code>=DIAS(Data_Entrega; Data_Pedido)</code>. Extraia o Mês (<code>=MÊS(Data_Pedido)</code>) e o Ano (<code>=ANO(Data_Pedido)</code>) em colunas auxiliares.</p>
             </label>
           </div>
 
-          <!-- PASSO 1.3 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
-            <input type="checkbox" id="chk3" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <input type="checkbox" id="chk3" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
             <label for="chk3" class="text-sm cursor-pointer space-y-1 block flex-1">
               <span class="font-bold text-blue-900 block">Passo 1.3 — Regra de Negócio Condicional Lógica:</span>
-              <p class="text-gray-700 text-xs">Crie a coluna <code>Status_Frete</code>. Se o tempo de entrega for superior a 5 dias, exiba <b>"Atrasado"</b>, caso contrário exiba <b>"No Prazo"</b>.</p>
+              <p class="text-gray-700 text-xs">Crie a coluna <code>Status_Frete</code>. Se o tempo de entrega for maior que 5 dias, exiba <b>"Atrasado"</b>, caso contrário exiba <b>"No Prazo"</b>.</p>
               <div class="bg-gray-50 font-mono text-xs p-1.5 rounded border border-gray-200 text-blue-800 font-semibold mt-1">Fórmula: =SE(Dias_Entrega > 5; "Atrasado"; "No Prazo")</div>
             </label>
           </div>
 
-          <!-- PASSO 1.4 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
-            <input type="checkbox" id="chk4" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <input type="checkbox" id="chk4" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
             <label for="chk4" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-blue-900 block">Passo 1.4 — Lógica Encadeada com Bónus do Vendedor:</span>
-              <p class="text-gray-700 text-xs">Crie a coluna <code>Bônus_Vendedor</code>. O bónus de 5% sobre a venda aplica-se <b>APENAS SE</b> o valor da venda for superior a R$ 400 <b>E</b> a avaliação do cliente for maior ou igual a 4.</p>
+              <span class="font-bold text-blue-900 block">Passo 1.4 — Lógica Encadeada com Bónus de Vendas:</span>
+              <p class="text-gray-700 text-xs">Crie a coluna <code>Bônus_Vendedor</code>. O bónus de 5% sobre a venda aplica-se <b>APENAS SE</b> a venda for maior que R$ 400 <b>E</b> a avaliação do cliente for &ge; 4.</p>
               <div class="bg-gray-50 font-mono text-xs p-1.5 rounded border border-gray-200 text-blue-800 font-semibold mt-1">Fórmula: =SE(E(Valor_Venda > 400; Avaliacao >= 4); Valor_Venda * 0,05; 0)</div>
             </label>
           </div>
 
-          <!-- PASSO 1.5 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
-            <input type="checkbox" id="chk5" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded border-gray-300 focus:ring-blue-500 cursor-pointer">
+            <input type="checkbox" id="chk5" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
             <label for="chk5" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-blue-900 block">Passo 1.5 — Relatório Estatístico Descritivo:</span>
-              <p class="text-gray-700 text-xs">Crie uma nova aba no Excel chamada <b>"Resumo"</b> e calcule os indicadores agregados da sua operação:</p>
-              <div class="grid grid-cols-2 md:grid-cols-3 gap-2 mt-2 font-mono text-xs bg-gray-50 p-2 rounded border border-gray-200 text-gray-800">
-                <div>• Média: <code>=MÉDIA(...)</code></div>
-                <div>• Mediana: <code>=MEDIANA(...)</code></div>
-                <div>• Moda: <code>=MODA.ÚNICA(...)</code></div>
-                <div>• Máximo: <code>=MÁXIMO(...)</code></div>
-                <div>• Mínimo: <code>=MÍNIMO(...)</code></div>
-                <div>• Contagem: <code>=CONT.SE(...)</code></div>
-              </div>
+              <span class="font-bold text-blue-900 block">Passo 1.5 — Relatório Estatístico Descritivo Completo:</span>
+              <p class="text-gray-700 text-xs">Numa nova aba chamada <b>"Resumo"</b>, calcule Média, Mediana, Moda, Máximo, Mínimo do Valor de Venda e a Contagem de Pedidos Atrasados com <code>=CONT.SE()</code>.</p>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-blue-400 transition">
+            <input type="checkbox" id="chk6" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-blue-600 rounded cursor-pointer">
+            <label for="chk6" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-blue-900 block">Passo 1.6 — Formatação Condicional com Alertas Visuais:</span>
+              <p class="text-gray-700 text-xs">Aplique regras de <b>Formatação Condicional</b> na coluna <code>Status_Frete</code>: destaque células contendo "Atrasado" com preenchimento Vermelho Claro e "No Prazo" com Verde Claro.</p>
             </label>
           </div>
 
@@ -160,55 +155,96 @@
       <div class="bg-indigo-50/60 border border-indigo-200 p-5 rounded-xl space-y-4">
         <div class="flex items-center justify-between border-b border-indigo-200 pb-2">
           <h3 class="font-bold text-indigo-900 text-lg flex items-center gap-2">
-            <span>🗓️</span> ENCONTRO 2 (4h) — Pesquisa de Dados, Tabela Dinâmica, Dashboard e Macros
+            <span>🗓️</span> ENCONTRO 2 (4h) — Validação, Consultas Avançadas, Tabela Dinâmica & Dashboard
           </h3>
-          <span class="bg-indigo-200 text-indigo-900 font-bold text-xs px-2.5 py-0.5 rounded">Etapa 2 de 2</span>
+          <span class="bg-indigo-200 text-indigo-900 font-bold text-xs px-2.5 py-0.5 rounded">Módulo Core 2</span>
         </div>
 
         <div class="space-y-3">
 
-          <!-- PASSO 2.1 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
-            <input type="checkbox" id="chk6" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer">
-            <label for="chk6" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-indigo-900 block">Passo 2.1 — Validação de Dados & Lista Suspensa:</span>
-              <p class="text-gray-700 text-xs">Na sua aba de resumo, utilize o recurso <b>Dados > Validação de Dados</b> para criar um menu suspenso com a lista dos 4 vendedores sem risco de erro de dactilografia.</p>
-            </label>
-          </div>
-
-          <!-- PASSO 2.2 -->
-          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
-            <input type="checkbox" id="chk7" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer">
+            <input type="checkbox" id="chk7" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded cursor-pointer">
             <label for="chk7" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-indigo-900 block">Passo 2.2 — Consulta Dinâmica de Resultados:</span>
-              <p class="text-gray-700 text-xs">Crie um campo de pesquisa que retorne o total acumulado do vendedor selecionado na lista suspensa utilizando a função <code>=PROCX()</code>, <code>=PROCV()</code> ou <code>=SOMASES()</code>.</p>
+              <span class="font-bold text-indigo-900 block">Passo 2.1 — Validação de Dados & Lista Suspensa:</span>
+              <p class="text-gray-700 text-xs">Na sua aba de resumo, use <b>Dados > Validação de Dados > Lista</b> para criar um menu suspenso para seleção dos 4 vendedores sem erro de digitação.</p>
             </label>
           </div>
 
-          <!-- PASSO 2.3 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
-            <input type="checkbox" id="chk8" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer">
+            <input type="checkbox" id="chk8" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded cursor-pointer">
             <label for="chk8" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-indigo-900 block">Passo 2.3 — Modelagem OLAP & Tabela Dinâmica:</span>
-              <p class="text-gray-700 text-xs">Selecione a sua base tratada, aceda a <b>Inserir > Tabela Dinâmica</b>. Agrupe as vendas por <b>Categoria</b> nas Linhas e insira a soma de <b>Valor_Venda</b> no campo de Valores. Adicione uma <i>Segmentação de Dados (Slicer)</i> por Vendedor.</p>
+              <span class="font-bold text-indigo-900 block">Passo 2.2 — Consulta Dinâmica com PROCX ou SOMASES:</span>
+              <p class="text-gray-700 text-xs">Crie um campo de busca que retorne a soma acumulada de bónus do vendedor selecionado no menu suspenso usando <code>=SOMASES(Bônus_Vendedor; Vendedor; Célula_Seleção)</code> ou <code>=PROCX()</code>.</p>
             </label>
           </div>
 
-          <!-- PASSO 2.4 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
-            <input type="checkbox" id="chk9" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer">
+            <input type="checkbox" id="chk9" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded cursor-pointer">
             <label for="chk9" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-indigo-900 block">Passo 2.4 — Visualização Executiva & Gráfico Dinâmico:</span>
-              <p class="text-gray-700 text-xs">Crie um Gráfico Dinâmico de Colunas/Barras conectado à sua Tabela Dinâmica. Formate o gráfico com títulos claros, rótulos de dados e esquema de cores profissional.</p>
+              <span class="font-bold text-indigo-900 block">Passo 2.3 — Modelagem OLAP & Tabela Dinâmica:</span>
+              <p class="text-gray-700 text-xs">Crie uma Tabela Dinâmica agrupadora por <b>Categoria</b> nas Linhas e <b>Soma do Valor_Venda</b> nos Valores. Insira uma <i>Segmentação de Dados (Slicer)</i> interativa por Vendedor.</p>
             </label>
           </div>
 
-          <!-- PASSO 2.5 -->
           <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
-            <input type="checkbox" id="chk10" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500 cursor-pointer">
+            <input type="checkbox" id="chk10" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded cursor-pointer">
             <label for="chk10" class="text-sm cursor-pointer space-y-1 block flex-1">
-              <span class="font-bold text-indigo-900 block">Passo 2.5 — Automação com Gravador de Macro VBA:</span>
-              <p class="text-gray-700 text-xs">Ative a guia <b>Desenvolvedor</b>, clique em <b>Gravar Macro</b>, execute a ação de "Limpar Filtros" da sua tabela, pare a gravação e atribua essa macro a um Botão/Forma estilizado na sua planilha.</p>
+              <span class="font-bold text-indigo-900 block">Passo 2.4 — Dashboard Executivo Visual:</span>
+              <p class="text-gray-700 text-xs">Insira um Gráfico Dinâmico de Colunas/Barras vinculado à Tabela Dinâmica. Formate o layout com título profissional, rótulos de dados e remoção de linhas de grade desnecessárias.</p>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-indigo-400 transition">
+            <input type="checkbox" id="chk11" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-indigo-600 rounded cursor-pointer">
+            <label for="chk11" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-indigo-900 block">Passo 2.5 — Automação VBA com Gravador de Macro:</span>
+              <p class="text-gray-700 text-xs">Na guia <b>Desenvolvedor</b>, grave uma Macro chamada <code>LimparFiltros</code> que reseta as seleções da Tabela Dinâmica. Associe a macro a uma Forma/Botão estilizado na planilha.</p>
+            </label>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MÓDULO BÔNUS / DESAFIO AVANÇADO -->
+      <div class="bg-amber-50/70 border border-amber-300 p-5 rounded-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-amber-300 pb-2">
+          <h3 class="font-bold text-amber-900 text-lg flex items-center gap-2">
+            <span>🚀</span> MÓDULO EXTRA / DESAFIO EXPERT (Para alunos que concluírem antes)
+          </h3>
+          <span class="bg-amber-200 text-amber-900 font-bold text-xs px-2.5 py-0.5 rounded">Aprofundamento Avançado</span>
+        </div>
+
+        <div class="space-y-3">
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-amber-400 transition">
+            <input type="checkbox" id="chk12" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-amber-600 rounded cursor-pointer">
+            <label for="chk12" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-amber-900 block">Desafio 3.1 — Indicador de Nível de Serviço Logístico (% SLA / OTIF):</span>
+              <p class="text-gray-700 text-xs">Calcule o percentual de entregas realizadas no prazo em relação ao total de pedidos (Fórmula: <code>=(Total_Pedidos - Pedidos_Atrasados) / Total_Pedidos</code>). Formate como Porcentagem com 2 casas decimais.</p>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-amber-400 transition">
+            <input type="checkbox" id="chk13" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-amber-600 rounded cursor-pointer">
+            <label for="chk13" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-amber-900 block">Desafio 3.2 — Matriz de Indicadores com Cartões KPI:</span>
+              <p class="text-gray-700 text-xs">Crie 3 caixas de texto/cartões no topo do seu Dashboard com fontes grandes (KPIs) exibindo: <b>1. Faturamento Total</b>, <b>2. % SLA no Prazo</b> e <b>3. Total de Bónus Pago</b>.</p>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-amber-400 transition">
+            <input type="checkbox" id="chk14" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-amber-600 rounded cursor-pointer">
+            <label for="chk14" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-amber-900 block">Desafio 3.3 — Simulação de Metas com Atingir Meta (Goal Seek):</span>
+              <p class="text-gray-700 text-xs">Utilize o recurso <b>Dados > Análise de Hipóteses > Atingir Meta</b> para simular qual deveria ser o ticket médio das vendas para atingir um Faturamento Total de R$ 100.000,00 na operação.</p>
+            </label>
+          </div>
+
+          <div class="flex items-start gap-3 bg-white p-3.5 rounded-lg border border-gray-200 shadow-sm hover:border-amber-400 transition">
+            <input type="checkbox" id="chk15" onchange="atualizarProgresso()" class="task-checkbox mt-1 h-5 w-5 text-amber-600 rounded cursor-pointer">
+            <label for="chk15" class="text-sm cursor-pointer space-y-1 block flex-1">
+              <span class="font-bold text-amber-900 block">Desafio 3.4 — Proteção de Planilha & Layout de Impressão:</span>
+              <p class="text-gray-700 text-xs">Defina a Área de Impressão do Dashboard para caber exatamente em 1 página na orientação Paisagem (A4) e proteja as células com fórmulas contra alterações acidentais.</p>
             </label>
           </div>
 
@@ -223,7 +259,7 @@
           <span>🏆</span> 3. Validação Automática de Gabarito & Envio da Nota
         </h2>
         <p class="text-xs text-gray-600 mt-1">
-          Insira abaixo os dois valores exatos calculados na sua planilha para verificação determinística contra o seu gabarito individual.
+          Insira abaixo os valores exatos calculados na sua planilha para verificação determinística contra o seu gabarito individual.
         </p>
       </div>
 
