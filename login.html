@@ -29,7 +29,7 @@
       <form id="formLogin" onsubmit="realizarLogin(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail Cadastrado:</label>
-          <input type="email" id="loginEmail" required placeholder="aluno@senai.br" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
+          <input type="email" id="loginEmail" required placeholder="seu.email@sistemafiep.org.br" class="w-full p-2.5 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">Senha:</label>
@@ -41,13 +41,20 @@
       <!-- FORMULÁRIO DE CADASTRO -->
       <form id="formCadastro" onsubmit="realizarCadastro(event)" class="space-y-3 hidden">
         <div>
-          <label class="block text-xs font-semibold text-gray-700 mb-1">Nome Completo:</label>
-          <input type="text" id="cadNome" required placeholder="Ex: Ricardo Horning Carvalho" class="w-full p-2 border rounded-lg text-sm">
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Tipo de Perfil:</label>
+          <select id="cadTipoPerfil" onchange="alternarCamposPerfil()" class="w-full p-2 border rounded-lg text-sm bg-blue-50 font-semibold text-blue-900">
+            <option value="aluno">Aluno (Aprendizagem Industrial)</option>
+            <option value="professor">Professor / Docente SENAI</option>
+          </select>
         </div>
-        <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-xs font-semibold text-gray-700 mb-1">Nome Completo:</label>
+          <input type="text" id="cadNome" required placeholder="Ex: Ricardo Carvalho" class="w-full p-2 border rounded-lg text-sm">
+        </div>
+        <div id="boxCamposAluno" class="grid grid-cols-2 gap-2">
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">RA / Matrícula:</label>
-            <input type="text" id="cadRA" required placeholder="Ex: 123456" class="w-full p-2 border rounded-lg text-sm">
+            <input type="text" id="cadRA" placeholder="Ex: 123456" class="w-full p-2 border rounded-lg text-sm">
           </div>
           <div>
             <label class="block text-xs font-semibold text-gray-700 mb-1">Turno:</label>
@@ -60,13 +67,13 @@
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">E-mail:</label>
-          <input type="email" id="cadEmail" required placeholder="seu.email@exemplo.com" class="w-full p-2 border rounded-lg text-sm">
+          <input type="email" id="cadEmail" required placeholder="ricardo.carvalho@sistemafiep.org.br" class="w-full p-2 border rounded-lg text-sm">
         </div>
         <div>
           <label class="block text-xs font-semibold text-gray-700 mb-1">Criar Senha (mínimo 6 caracteres):</label>
           <input type="password" id="cadSenha" required minlength="6" placeholder="••••••••" class="w-full p-2 border rounded-lg text-sm">
         </div>
-        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm transition">Cadastrar e Iniciar Atividade</button>
+        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 rounded-lg text-sm transition">Criar Minha Conta</button>
       </form>
 
       <div id="authMensagem" class="mt-4 text-xs text-center font-bold hidden p-2 rounded"></div>
@@ -85,6 +92,27 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+
+    // Se já estiver logado, redireciona direto
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        if (user.email === "ricardo.carvalho@sistemafiep.org.br") {
+          window.location.href = "dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      }
+    });
+
+    function alternarCamposPerfil() {
+      const tipo = document.getElementById('cadTipoPerfil').value;
+      const boxAluno = document.getElementById('boxCamposAluno');
+      if (tipo === 'professor') {
+        boxAluno.classList.add('hidden');
+      } else {
+        boxAluno.classList.remove('hidden');
+      }
+    }
 
     function mudarAba(aba) {
       const msg = document.getElementById('authMensagem');
@@ -115,7 +143,11 @@
 
       try {
         await auth.signInWithEmailAndPassword(email, senha);
-        window.location.href = "index.html";
+        if (email === "ricardo.carvalho@sistemafiep.org.br") {
+          window.location.href = "dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } catch (err) {
         exibirMensagem("Erro ao entrar: Verifique e-mail e senha.", true);
       }
@@ -123,9 +155,10 @@
 
     async function realizarCadastro(e) {
       e.preventDefault();
+      const tipoPerfil = document.getElementById('cadTipoPerfil').value;
       const nome = document.getElementById('cadNome').value.trim();
-      const ra = document.getElementById('cadRA').value.trim();
-      const turno = document.getElementById('cadTurno').value;
+      const ra = tipoPerfil === 'aluno' ? document.getElementById('cadRA').value.trim() : 'DOCENTE';
+      const turno = tipoPerfil === 'aluno' ? document.getElementById('cadTurno').value : 'N/A';
       const email = document.getElementById('cadEmail').value.trim();
       const senha = document.getElementById('cadSenha').value;
 
@@ -141,10 +174,15 @@
           ra: ra,
           turno: turno,
           email: email,
+          perfil: tipoPerfil,
           criadoEm: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        window.location.href = "index.html";
+        if (tipoPerfil === 'professor' || email === 'ricardo.carvalho@sistemafiep.org.br') {
+          window.location.href = "dashboard.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } catch (err) {
         exibirMensagem("Erro no cadastro: " + err.message, true);
       }

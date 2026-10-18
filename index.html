@@ -18,20 +18,24 @@
         <h1 class="text-2xl font-bold">UC TGDQ — Prática Empresarial LogTech</h1>
         <p class="text-blue-200 text-sm">Tratamento e Gerenciamento de Dados Quantitativos (SENAI)</p>
       </div>
-      <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-bold transition">Sair / Logout</button>
+      <div id="boxHeaderBotoes" class="flex gap-2">
+        <a id="btnPainelProf" href="dashboard.html" class="hidden bg-yellow-500 hover:bg-yellow-600 text-blue-950 px-3 py-2 rounded text-xs font-bold transition">📊 Painel Professor</a>
+        <button id="btnLogout" onclick="logout()" class="bg-red-600 hover:bg-red-700 px-3 py-2 rounded text-xs font-bold transition">Sair / Logout</button>
+      </div>
     </div>
   </header>
 
   <main class="max-w-5xl mx-auto p-6 space-y-6">
 
-    <!-- 1. IDENTIFICAÇÃO DO ALUNO -->
-    <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+    <!-- 1. IDENTIFICAÇÃO DO ALUNO LOGADO -->
+    <section id="secPerfilAluno" class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <h2 class="text-xl font-bold text-blue-900 mb-2">👤 1. Perfil Autenticado & Gerador de Base Única</h2>
-      <div id="carregandoPerfil" class="text-sm text-gray-500">Carregando seus dados do servidor...</div>
       
+      <div id="carregandoPerfil" class="text-sm text-gray-500">Verificando autenticação...</div>
+
       <div id="dadosPerfil" class="hidden">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm mb-4">
-          <div><strong>Aluno:</strong> <span id="lblNome">-</span></div>
+          <div><strong>Usuário:</strong> <span id="lblNome">-</span></div>
           <div><strong>RA / Matrícula:</strong> <span id="lblRA">-</span></div>
           <div><strong>Turno:</strong> <span id="lblTurno">-</span></div>
         </div>
@@ -52,11 +56,11 @@
           <span>🗓️</span> ENCONTRO 1 (4h) — Tratamento, Datas, Lógica e Estatística Descritiva
         </h3>
         <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
-          <li><strong>Passo 1.1 (Importação e ETL):</strong> Abra o Excel, vá em <i>Dados > Obter Dados de Texto/CSV</i> e carregue seu arquivo baixado. Verifique se os números de valor estão no formato correto.</li>
-          <li><strong>Passo 1.2 (Funções de Data):</strong> Crie a coluna <code>Dias_Entrega</code> usando a fórmula <code>=DIAS(Célula_Entrega; Célula_Pedido)</code>. Crie colunas auxiliares para extrair o Mês (<code>=MÊS()</code>) e Ano (<code>=ANO()</code>).</li>
+          <li><strong>Passo 1.1 (Importação e ETL):</strong> Abra o Excel, vá em <i>Dados > Obter Dados de Texto/CSV</i> e carregue o ficheiro descarregado. Verifique se os valores estão no formato correto.</li>
+          <li><strong>Passo 1.2 (Funções de Data):</strong> Crie a coluna <code>Dias_Entrega</code> com a fórmula <code>=DIAS(Célula_Entrega; Célula_Pedido)</code>. Crie colunas auxiliares para extrair o Mês (<code>=MÊS()</code>) e Ano (<code>=ANO()</code>).</li>
           <li><strong>Passo 1.3 (Regras Lógicas):</strong> Crie a coluna <code>Status_Frete</code>. Se o tempo de entrega for maior que 5 dias, exiba "Atrasado", senão "No Prazo" (<code>=SE(Dias_Entrega > 5; "Atrasado"; "No Prazo")</code>).</li>
-          <li><strong>Passo 1.4 (Lógica Encadeada E):</strong> Crie a coluna <code>Bônus_Vendedor</code>. O bônus será 5% da venda APENAS SE o valor da venda for maior que R$ 400 E a avaliação do cliente for maior ou igual a 4 (<code>=SE(E(Valor > 400; Avaliação >= 4); Valor * 0,05; 0)</code>).</li>
-          <li><strong>Passo 1.5 (Estatística Descritiva):</strong> Em uma nova aba chamada "Resumo", calcule:
+          <li><strong>Passo 1.4 (Lógica Encadeada E):</strong> Crie a coluna <code>Bônus_Vendedor</code>. O bônus será 5% da venda APENAS SE o valor da venda for maior que R$ 400 E a avaliação for maior ou igual a 4 (<code>=SE(E(Valor > 400; Avaliação >= 4); Valor * 0,05; 0)</code>).</li>
+          <li><strong>Passo 1.5 (Estatística Descritiva):</strong> Numa nova aba chamada "Resumo", calcule:
             <div class="grid grid-cols-2 gap-2 mt-2 font-mono text-xs bg-white p-2 rounded border">
               <div>Média: =MÉDIA(Valor_Venda)</div>
               <div>Mediana: =MEDIANA(Valor_Venda)</div>
@@ -75,11 +79,11 @@
           <span>🗓️</span> ENCONTRO 2 (4h) — Consultas, Tabela Dinâmica, Visuais e Macros
         </h3>
         <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
-          <li><strong>Passo 2.1 (Validação de Dados):</strong> Crie uma Lista Suspensa em uma célula de pesquisa para selecionar o nome do Vendedor sem erros de digitação.</li>
-          <li><strong>Passo 2.2 (Pesquisa PROCV ou PROCX):</strong> Crie um campo de consulta que retorne automaticamente o Bônus acumulado do vendedor selecionado usando <code>=PROCX()</code> ou <code>=PROCV()</code>.</li>
-          <li><strong>Passo 2.3 (Tabela Dinâmica - OLAP):</strong> Selecione a base tratada, vá em <i>Inserir > Tabela Dinâmica</i>. Agrupe as vendas por <b>Categoria</b> nas Linhas e a soma de <b>Valor_Venda</b> nos Valores. Adicione uma <i>Segmentação de Dados</i> por Vendedor.</li>
-          <li><strong>Passo 2.4 (Gráficos Dinâmicos):</strong> Insira um Gráfico de Colunas/Barras conectado à Tabela Dinâmica para criar um Mini Dashboard.</li>
-          <li><strong>Passo 2.5 (Gravação de Macro Simples):</strong> Ative a guia <i>Desenvolvedor</i>, clique em <i>Gravar Macro</i>, crie uma ação para "Limpar Filtros" da tabela, pare a gravação e atribua essa macro a um Botão/Forma na planilha.</li>
+          <li><strong>Passo 2.1 (Validação de Dados):</strong> Crie uma Lista Suspensa para selecionar o nome do Vendedor sem erros.</li>
+          <li><strong>Passo 2.2 (Pesquisa PROCV ou PROCX):</strong> Crie um campo de consulta que retorne automaticamente o Bônus acumulado do vendedor usando <code>=PROCX()</code> ou <code>=PROCV()</code>.</li>
+          <li><strong>Passo 2.3 (Tabela Dinâmica):</strong> Agrupe as vendas por <b>Categoria</b> nas Linhas e a soma de <b>Valor_Venda</b> nos Valores. Adicione uma <i>Segmentação de Dados</i> por Vendedor.</li>
+          <li><strong>Passo 2.4 (Gráficos Dinâmicos):</strong> Insira um Gráfico de Colunas conectado à Tabela Dinâmica.</li>
+          <li><strong>Passo 2.5 (Gravação de Macro):</strong> Grave uma macro para "Limpar Filtros" e atribua a um Botão na planilha.</li>
         </ul>
       </div>
     </section>
@@ -88,7 +92,7 @@
     <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
       <h2 class="text-xl font-bold text-blue-900 mb-4">🏆 3. Validação de Resultados & Envio Final</h2>
       <p class="text-sm text-gray-600 mb-4">
-        Insira os valores calculados na sua planilha para checagem do gabarito individual e gravação da sua nota no sistema.
+        Insira os valores calculados na sua planilha para validação do gabarito individual e gravação da sua nota no sistema.
       </p>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -129,18 +133,36 @@
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
+        // Se NÃO estiver logado, redireciona AUTOMATICAMENTE para a tela de login
         window.location.href = "login.html";
         return;
       }
+
       usuarioAtual = user;
-      const doc = await db.collection("usuarios").doc(user.uid).get();
-      if (doc.exists) {
-        dadosFirestore = doc.data();
-        document.getElementById('lblNome').innerText = dadosFirestore.nome;
-        document.getElementById('lblRA').innerText = dadosFirestore.ra;
-        document.getElementById('lblTurno').innerText = dadosFirestore.turno;
+      try {
+        const doc = await db.collection("usuarios").doc(user.uid).get();
+        if (doc.exists) {
+          dadosFirestore = doc.data();
+          document.getElementById('lblNome').innerText = dadosFirestore.nome || user.displayName || user.email;
+          document.getElementById('lblRA').innerText = dadosFirestore.ra || 'N/A';
+          document.getElementById('lblTurno').innerText = dadosFirestore.turno || 'N/A';
+
+          if (dadosFirestore.perfil === 'professor' || user.email === 'ricardo.carvalho@sistemafiep.org.br') {
+            document.getElementById('btnPainelProf').classList.remove('hidden');
+          }
+        } else {
+          dadosFirestore = { nome: user.displayName || user.email, ra: "000000", turno: "T1" };
+          document.getElementById('lblNome').innerText = dadosFirestore.nome;
+          document.getElementById('lblRA').innerText = dadosFirestore.ra;
+          document.getElementById('lblTurno').innerText = dadosFirestore.turno;
+          if (user.email === 'ricardo.carvalho@sistemafiep.org.br') {
+            document.getElementById('btnPainelProf').classList.remove('hidden');
+          }
+        }
         document.getElementById('carregandoPerfil').classList.add('hidden');
         document.getElementById('dadosPerfil').classList.remove('hidden');
+      } catch (e) {
+        console.error("Erro ao carregar dados do usuário:", e);
       }
     });
 
@@ -167,8 +189,7 @@
       if (!dadosFirestore) return;
       seedGlobal = getSeed(dadosFirestore.nome + dadosFirestore.ra);
 
-      let csv = "ID_Pedido;Data_Pedido;Data_Entrega;Vendedor;Categoria;Valor_Venda;Avaliacao
-";
+      let csv = "ID_Pedido;Data_Pedido;Data_Entrega;Vendedor;Categoria;Valor_Venda;Avaliacao\n";
       const vendedores = ["Carlos Silva", "Ana Souza", "Marcos Lima", "Fernanda Santos"];
       const categorias = ["Eletrônicos", "Acessórios", "Móveis Escritório", "Suprimentos"];
 
@@ -179,11 +200,10 @@
         const cat = categorias[Math.floor(seededRandom() * categorias.length)];
         const valor = (seededRandom() * 800 + 100).toFixed(2);
         const aval = Math.floor(seededRandom() * 3) + 3;
-        csv += `${1000+i};2026-10-${diaP < 10 ? '0'+diaP : diaP};2026-10-${(diaP+diasE) < 10 ? '0'+(diaP+diasE) : (diaP+diasE)};${vend};${cat};${valor};${aval}
-`;
+        csv += `${1000+i};2026-10-${diaP < 10 ? '0'+diaP : diaP};2026-10-${(diaP+diasE) < 10 ? '0'+(diaP+diasE) : (diaP+diasE)};${vend};${cat};${valor};${aval}\n`;
       }
 
-      const blob = new Blob(["﻿" + csv], { type: 'text/csv;charset=utf-8;' });
+      const blob = new Blob(["\ufeff" + csv], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob);
       link.download = `LogTech_Base_${dadosFirestore.nome.replace(/\s+/g, '_')}.csv`;
@@ -191,6 +211,8 @@
     }
 
     async function validarEEnviar() {
+      if (!usuarioAtual) return;
+
       const statusDiv = document.getElementById('resultadoStatus');
       const respMediaInput = document.getElementById('respMediaDias').value;
       const respAtrasosInput = document.getElementById('respAtrasados').value;

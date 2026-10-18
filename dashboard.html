@@ -18,7 +18,11 @@
         <h1 class="text-2xl font-bold">📊 Painel do Professor — Entregas TGDQ</h1>
         <p class="text-blue-200 text-sm">Acompanhamento e Notas dos Alunos em Tempo Real</p>
       </div>
-      <div id="totalEntregas" class="bg-blue-800 px-4 py-2 rounded text-lg font-bold">Total: 0</div>
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="bg-blue-800 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-xs font-bold transition">📋 Ver Roteiro</a>
+        <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-bold transition">Sair</button>
+        <div id="totalEntregas" class="bg-blue-800 px-4 py-2 rounded text-lg font-bold">Total: 0</div>
+      </div>
     </header>
 
     <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
@@ -36,7 +40,7 @@
             </tr>
           </thead>
           <tbody id="tabelaResultados" class="text-sm divide-y divide-gray-200">
-            <tr><td colspan="7" class="p-4 text-center text-gray-500">Aguardando login ou carregando dados...</td></tr>
+            <tr><td colspan="7" class="p-4 text-center text-gray-500">Aguardando autorização...</td></tr>
           </tbody>
         </table>
       </div>
@@ -44,6 +48,8 @@
   </div>
 
   <script>
+    const EMAIL_PROFESSOR_MESTRE = "ricardo.carvalho@sistemafiep.org.br";
+
     const firebaseConfig = {
       apiKey: "AIzaSyAlvnAZtBvfh9UomS6JDfnLwRfhX0oW66I",
       authDomain: "senai-tgdq-2026.firebaseapp.com",
@@ -56,44 +62,61 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    auth.onAuthStateChanged((user) => {
+    function logout() {
+      auth.signOut().then(() => window.location.href = "login.html");
+    }
+
+    auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        alert("Por favor, faça login primeiro para acessar o painel do professor.");
+        alert("Por favor, faça login para aceder ao painel.");
         window.location.href = "login.html";
         return;
       }
 
-      // Escuta entregas dos alunos em tempo real
-      db.collection("entregas_tgdq").orderBy("dataEnvio", "desc")
-        .onSnapshot((snapshot) => {
-          const tabela = document.getElementById("tabelaResultados");
-          document.getElementById("totalEntregas").innerText = `Total: ${snapshot.size}`;
-          
-          if (snapshot.empty) {
-            tabela.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">Nenhuma entrega registrada ainda.</td></tr>`;
-            return;
-          }
+      try {
+        const doc = await db.collection("usuarios").doc(user.uid).get();
+        const dados = doc.exists ? doc.data() : {};
+        
+        if (user.email !== EMAIL_PROFESSOR_MESTRE && dados.perfil !== 'professor') {
+          alert("Acesso exclusivo ao Professor da disciplina.");
+          window.location.href = "index.html";
+          return;
+        }
 
-          let html = "";
-          snapshot.forEach((doc) => {
-            const d = doc.data();
-            const hora = d.dataEnvio ? new Date(d.dataEnvio.toDate()).toLocaleTimeString('pt-BR') : 'Enviando...';
-            const corNota = d.nota >= 7 ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+        db.collection("entregas_tgdq").orderBy("dataEnvio", "desc")
+          .onSnapshot((snapshot) => {
+            const tabela = document.getElementById("tabelaResultados");
+            document.getElementById("totalEntregas").innerText = `Total: ${snapshot.size}`;
+            
+            if (snapshot.empty) {
+              tabela.innerHTML = `<tr><td colspan="7" class="p-4 text-center text-gray-500">Nenhuma entrega registrada ainda.</td></tr>`;
+              return;
+            }
 
-            html += `
-              <tr class="hover:bg-gray-50">
-                <td class="p-3 text-xs text-gray-500">${hora}</td>
-                <td class="p-3 font-semibold">${d.nome}</td>
-                <td class="p-3">${d.ra}</td>
-                <td class="p-3"><span class="bg-gray-200 px-2 py-1 rounded text-xs">${d.turno}</span></td>
-                <td class="p-3">${d.respMedia}</td>
-                <td class="p-3">${d.respAtrasos}</td>
-                <td class="p-3 ${corNota}">${d.nota ? d.nota.toFixed(1) : '0.0'}</td>
-              </tr>
-            `;
+            let html = "";
+            snapshot.forEach((doc) => {
+              const d = doc.data();
+              const hora = d.dataEnvio ? new Date(d.dataEnvio.toDate()).toLocaleTimeString('pt-BR') : 'Enviando...';
+              const corNota = d.nota >= 7 ? 'text-green-600 font-bold' : 'text-red-600 font-bold';
+
+              html += `
+                <tr class="hover:bg-gray-50">
+                  <td class="p-3 text-xs text-gray-500">${hora}</td>
+                  <td class="p-3 font-semibold">${d.nome}</td>
+                  <td class="p-3">${d.ra}</td>
+                  <td class="p-3"><span class="bg-gray-200 px-2 py-1 rounded text-xs">${d.turno}</span></td>
+                  <td class="p-3">${d.respMedia}</td>
+                  <td class="p-3">${d.respAtrasos}</td>
+                  <td class="p-3 ${corNota}">${d.nota ? d.nota.toFixed(1) : '0.0'}</td>
+                </tr>
+              `;
+            });
+            tabela.innerHTML = html;
           });
-          tabela.innerHTML = html;
-        });
+
+      } catch (e) {
+        console.error("Erro de permissão:", e);
+      }
     });
   </script>
 </body>
