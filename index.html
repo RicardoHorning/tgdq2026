@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TGDQ - Roteiro Prático Guiado</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase SDKs (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
+
+  <header class="bg-blue-900 text-white p-6 shadow-md">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">UC TGDQ — Prática Empresarial LogTech</h1>
+        <p class="text-blue-200 text-sm">Tratamento e Gerenciamento de Dados Quantitativos (SENAI)</p>
+      </div>
+      <button onclick="logout()" class="bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-xs font-bold transition">Sair / Logout</button>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto p-6 space-y-6">
+
+    <!-- 1. IDENTIFICAÇÃO DO ALUNO -->
+    <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <h2 class="text-xl font-bold text-blue-900 mb-2">👤 1. Perfil Autenticado & Gerador de Base Única</h2>
+      <div id="carregandoPerfil" class="text-sm text-gray-500">Carregando seus dados do servidor...</div>
+      
+      <div id="dadosPerfil" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 p-4 rounded-lg border border-gray-200 text-sm mb-4">
+          <div><strong>Aluno:</strong> <span id="lblNome">-</span></div>
+          <div><strong>RA / Matrícula:</strong> <span id="lblRA">-</span></div>
+          <div><strong>Turno:</strong> <span id="lblTurno">-</span></div>
+        </div>
+
+        <button onclick="gerarEBaixarCSV()" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded text-sm transition flex items-center gap-2">
+          📥 Baixar Minha Base de Dados Exclusiva (.CSV)
+        </button>
+      </div>
+    </section>
+
+    <!-- 2. ROTEIRO DETALHADO DOS 2 ENCONTROS -->
+    <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200 space-y-6">
+      <h2 class="text-xl font-bold text-blue-900 border-b pb-2">📋 2. Roteiro Prático de Missões (8 Horas)</h2>
+
+      <!-- ENCONTRO 1 -->
+      <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded-r-lg space-y-3">
+        <h3 class="font-bold text-blue-900 text-lg flex items-center gap-2">
+          <span>🗓️</span> ENCONTRO 1 (4h) — Tratamento, Datas, Lógica e Estatística Descritiva
+        </h3>
+        <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+          <li><strong>Passo 1.1 (Importação e ETL):</strong> Abra o Excel, vá em <i>Dados > Obter Dados de Texto/CSV</i> e carregue seu arquivo baixado. Verifique se os números de valor estão no formato correto.</li>
+          <li><strong>Passo 1.2 (Funções de Data):</strong> Crie a coluna <code>Dias_Entrega</code> usando a fórmula <code>=DIAS(Célula_Entrega; Célula_Pedido)</code>. Crie colunas auxiliares para extrair o Mês (<code>=MÊS()</code>) e Ano (<code>=ANO()</code>).</li>
+          <li><strong>Passo 1.3 (Regras Lógicas):</strong> Crie a coluna <code>Status_Frete</code>. Se o tempo de entrega for maior que 5 dias, exiba "Atrasado", senão "No Prazo" (<code>=SE(Dias_Entrega > 5; "Atrasado"; "No Prazo")</code>).</li>
+          <li><strong>Passo 1.4 (Lógica Encadeada E):</strong> Crie a coluna <code>Bônus_Vendedor</code>. O bônus será 5% da venda APENAS SE o valor da venda for maior que R$ 400 E a avaliação do cliente for maior ou igual a 4 (<code>=SE(E(Valor > 400; Avaliação >= 4); Valor * 0,05; 0)</code>).</li>
+          <li><strong>Passo 1.5 (Estatística Descritiva):</strong> Em uma nova aba chamada "Resumo", calcule:
+            <div class="grid grid-cols-2 gap-2 mt-2 font-mono text-xs bg-white p-2 rounded border">
+              <div>Média: =MÉDIA(Valor_Venda)</div>
+              <div>Mediana: =MEDIANA(Valor_Venda)</div>
+              <div>Moda: =MODA.ÚNICA(Valor_Venda)</div>
+              <div>Máximo: =MÁXIMO(Valor_Venda)</div>
+              <div>Mínimo: =MÍNIMO(Valor_Venda)</div>
+              <div>Contagem Atrasados: =CONT.SE(Status_Frete; "Atrasado")</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ENCONTRO 2 -->
+      <div class="bg-indigo-50 border-l-4 border-indigo-600 p-4 rounded-r-lg space-y-3">
+        <h3 class="font-bold text-indigo-900 text-lg flex items-center gap-2">
+          <span>🗓️</span> ENCONTRO 2 (4h) — Consultas, Tabela Dinâmica, Visuais e Macros
+        </h3>
+        <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+          <li><strong>Passo 2.1 (Validação de Dados):</strong> Crie uma Lista Suspensa em uma célula de pesquisa para selecionar o nome do Vendedor sem erros de digitação.</li>
+          <li><strong>Passo 2.2 (Pesquisa PROCV ou PROCX):</strong> Crie um campo de consulta que retorne automaticamente o Bônus acumulado do vendedor selecionado usando <code>=PROCX()</code> ou <code>=PROCV()</code>.</li>
+          <li><strong>Passo 2.3 (Tabela Dinâmica - OLAP):</strong> Selecione a base tratada, vá em <i>Inserir > Tabela Dinâmica</i>. Agrupe as vendas por <b>Categoria</b> nas Linhas e a soma de <b>Valor_Venda</b> nos Valores. Adicione uma <i>Segmentação de Dados</i> por Vendedor.</li>
+          <li><strong>Passo 2.4 (Gráficos Dinâmicos):</strong> Insira um Gráfico de Colunas/Barras conectado à Tabela Dinâmica para criar um Mini Dashboard.</li>
+          <li><strong>Passo 2.5 (Gravação de Macro Simples):</strong> Ative a guia <i>Desenvolvedor</i>, clique em <i>Gravar Macro</i>, crie uma ação para "Limpar Filtros" da tabela, pare a gravação e atribua essa macro a um Botão/Forma na planilha.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. GABARITO & ENVIO DO ARQUIVO -->
+    <section class="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+      <h2 class="text-xl font-bold text-blue-900 mb-4">🏆 3. Validação de Resultados & Envio Final</h2>
+      <p class="text-sm text-gray-600 mb-4">
+        Insira os valores calculados na sua planilha para checagem do gabarito individual e gravação da sua nota no sistema.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-xs font-semibold mb-1">Média do Prazo de Entrega em Dias (=MÉDIA):</label>
+          <input type="number" id="respMediaDias" step="0.01" placeholder="Ex: 5.45" class="w-full p-2 border rounded text-sm">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold mb-1">Total de Pedidos Atrasados (=CONT.SE):</label>
+          <input type="number" id="respAtrasados" placeholder="Ex: 82" class="w-full p-2 border rounded text-sm">
+        </div>
+      </div>
+
+      <button onclick="validarEEnviar()" class="w-full bg-blue-900 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded text-sm transition">
+        🚀 Validar Nota e Registrar Atividade
+      </button>
+
+      <div id="resultadoStatus" class="mt-4 p-4 rounded hidden text-center font-bold"></div>
+    </section>
+
+  </main>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAlvnAZtBvfh9UomS6JDfnLwRfhX0oW66I",
+      authDomain: "senai-tgdq-2026.firebaseapp.com",
+      projectId: "senai-tgdq-2026",
+      storageBucket: "senai-tgdq-2026.firebasestorage.app",
+      messagingSenderId: "236131355651",
+      appId: "1:236131355651:web:ae3921fef6939d06be1236"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let usuarioAtual = null;
+    let dadosFirestore = null;
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+      usuarioAtual = user;
+      const doc = await db.collection("usuarios").doc(user.uid).get();
+      if (doc.exists) {
+        dadosFirestore = doc.data();
+        document.getElementById('lblNome').innerText = dadosFirestore.nome;
+        document.getElementById('lblRA').innerText = dadosFirestore.ra;
+        document.getElementById('lblTurno').innerText = dadosFirestore.turno;
+        document.getElementById('carregandoPerfil').classList.add('hidden');
+        document.getElementById('dadosPerfil').classList.remove('hidden');
+      }
+    });
+
+    function logout() {
+      auth.signOut().then(() => window.location.href = "login.html");
+    }
+
+    function getSeed(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        hash = (hash << 5) - hash + str.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash) || 12345;
+    }
+
+    let seedGlobal = 12345;
+    function seededRandom() {
+      let x = Math.sin(seedGlobal++) * 10000;
+      return x - Math.floor(x);
+    }
+
+    function gerarEBaixarCSV() {
+      if (!dadosFirestore) return;
+      seedGlobal = getSeed(dadosFirestore.nome + dadosFirestore.ra);
+
+      let csv = "ID_Pedido;Data_Pedido;Data_Entrega;Vendedor;Categoria;Valor_Venda;Avaliacao
+";
+      const vendedores = ["Carlos Silva", "Ana Souza", "Marcos Lima", "Fernanda Santos"];
+      const categorias = ["Eletrônicos", "Acessórios", "Móveis Escritório", "Suprimentos"];
+
+      for (let i = 1; i <= 200; i++) {
+        const diaP = Math.floor(seededRandom() * 20) + 1;
+        const diasE = Math.floor(seededRandom() * 10) + 1;
+        const vend = vendedores[Math.floor(seededRandom() * vendedores.length)];
+        const cat = categorias[Math.floor(seededRandom() * categorias.length)];
+        const valor = (seededRandom() * 800 + 100).toFixed(2);
+        const aval = Math.floor(seededRandom() * 3) + 3;
+        csv += `${1000+i};2026-10-${diaP < 10 ? '0'+diaP : diaP};2026-10-${(diaP+diasE) < 10 ? '0'+(diaP+diasE) : (diaP+diasE)};${vend};${cat};${valor};${aval}
+`;
+      }
+
+      const blob = new Blob(["﻿" + csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `LogTech_Base_${dadosFirestore.nome.replace(/\s+/g, '_')}.csv`;
+      link.click();
+    }
+
+    async function validarEEnviar() {
+      const statusDiv = document.getElementById('resultadoStatus');
+      const respMediaInput = document.getElementById('respMediaDias').value;
+      const respAtrasosInput = document.getElementById('respAtrasados').value;
+
+      if (!respMediaInput || !respAtrasosInput) {
+        alert("Por favor, preencha os dois campos do gabarito antes de enviar!");
+        return;
+      }
+
+      statusDiv.className = "mt-4 p-4 rounded bg-yellow-100 text-yellow-800 font-bold block";
+      statusDiv.innerText = "Calculando nota e salvando resultado no sistema...";
+
+      seedGlobal = getSeed(dadosFirestore.nome + dadosFirestore.ra);
+      let somaDias = 0;
+      let atrasos = 0;
+      for (let i = 1; i <= 200; i++) {
+        const diaP = Math.floor(seededRandom() * 20) + 1;
+        const diasE = Math.floor(seededRandom() * 10) + 1;
+        somaDias += diasE;
+        if (diasE > 5) atrasos++;
+      }
+      const mediaDiasGabarito = (somaDias / 200).toFixed(2);
+      const respMedia = parseFloat(respMediaInput) || 0;
+      const respAtrasos = parseInt(respAtrasosInput) || 0;
+
+      let nota = 10.0;
+      if (Math.abs(respMedia - mediaDiasGabarito) > 0.2) nota -= 2.5;
+      if (respAtrasos !== atrasos) nota -= 2.5;
+
+      try {
+        await db.collection("entregas_tgdq").add({
+          uid: usuarioAtual.uid,
+          nome: dadosFirestore.nome,
+          ra: dadosFirestore.ra,
+          turno: dadosFirestore.turno,
+          nota: nota,
+          respMedia: respMedia,
+          respAtrasos: respAtrasos,
+          dataEnvio: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        statusDiv.className = "mt-4 p-4 rounded bg-green-100 text-green-800 font-bold block";
+        statusDiv.innerHTML = `✅ Atividade Registrada com Sucesso!<br>Sua Nota Final: <span class="text-2xl">${nota.toFixed(1)} / 10.0</span>`;
+
+      } catch (err) {
+        statusDiv.className = "mt-4 p-4 rounded bg-red-100 text-red-800 font-bold block";
+        statusDiv.innerText = "Erro ao enviar: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
